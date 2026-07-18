@@ -36,16 +36,28 @@ pip install -e ".[dev]"
 pytest -q
 ```
 
-### Generate figures
+### Tutorial notebook
+
+Concise walkthrough of the companion model and spin-valve demos:
 
 ```bash
-python scripts/run_companion_demo.py
-python scripts/run_transport_demo.py
-# or both:
-python scripts/generate_figures.py
+jupyter notebook notebooks/tutorial.ipynb
+# or:
+jupyter lab notebooks/tutorial.ipynb
 ```
 
-Figures are written to `figures/`.
+### Generate figures
+
+On Windows, prefer UTF-8 mode if the console encoding is limited:
+
+```bash
+python -X utf8 scripts/run_companion_demo.py
+python -X utf8 scripts/run_transport_demo.py
+# or both:
+python -X utf8 scripts/generate_figures.py
+```
+
+Figures (PNG + PDF for companion) are written to `figures/`; numeric source data to `figures/data/`.
 
 ---
 
