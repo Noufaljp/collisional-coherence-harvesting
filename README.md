@@ -11,6 +11,9 @@ This project studies how a continuously regenerated coherent resource — either
 
 Theory notes live in [`notes/`](notes/).
 
+**Living publication checklist (for agents and collaborators):**  
+[`docs/PUBLICATION_READINESS.md`](docs/PUBLICATION_READINESS.md) — what is done, what remains, priorities, and acceptance criteria. Update it whenever you finish a task.
+
 ---
 
 ## Quick start
