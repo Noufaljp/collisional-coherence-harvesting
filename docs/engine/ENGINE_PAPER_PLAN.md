@@ -104,7 +104,9 @@ Both pass       → build full engine paper; companion = SI
 | Date | Item | Result |
 |------|------|--------|
 | 2026-07-18 | Branch `spin-valve-engine` + plan | Opened |
-| 2026-07-18 | Gate 1 Week 1 scan | **Verdict GO** (borderline $\|C\|\approx0.050$ at $\Delta/\gamma=0.3$, $\theta_R=\pi/2$; collinear $C=0$; large-$\Delta$ suppressed; all positive). See `results/gate1/GATE1_REPORT.md` |
+| 2026-07-18 | Gate 1 Week 1 scan | **GO** (borderline $\|C\|\approx0.050$). See `results/gate1/GATE1_REPORT.md` |
+| 2026-07-18 | Gate 1 boost / gap-fill | $\|C\|$ raised to **~0.14** via $p$, bias, small $\Delta$, tilt. See `results/gate1/GATE1_BOOST_REPORT.md` |
+| 2026-07-18 | Gate 2 harvest | **GO**: one-shot $\mathcal{W}_A>0$, stroboscopic residual $C$, regeneration; $\alpha=1/2$ has $\mathcal{W}_{\rm coh}=0$. See `results/gate2/GATE2_REPORT.md` |
 
 ---
 
