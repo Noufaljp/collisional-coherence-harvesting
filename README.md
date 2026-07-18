@@ -14,8 +14,12 @@ Theory notes live in [`notes/`](notes/).
 **Living publication checklist (for agents and collaborators):**  
 [`docs/PUBLICATION_READINESS.md`](docs/PUBLICATION_READINESS.md) — what is done, what remains, priorities, and acceptance criteria. Update it whenever you finish a task.
 
-**Small paper scope (what forms the first publication):**  
-[`docs/SMALL_PAPER_SCOPE.md`](docs/SMALL_PAPER_SCOPE.md) — companion-only claim, results R1–R8, figures, non-claims, writing remaining.
+**Small paper scope (supporting companion):**  
+[`docs/SMALL_PAPER_SCOPE.md`](docs/SMALL_PAPER_SCOPE.md) — companion-only claim, results R1–R8, figures, non-claims.
+
+**Big paper (spin-valve engine) — active branch `spin-valve-engine`:**  
+[`docs/engine/ENGINE_PAPER_PLAN.md`](docs/engine/ENGINE_PAPER_PLAN.md) — stages, gates, decision tree.  
+Gate 1 results: [`results/gate1/GATE1_REPORT.md`](results/gate1/GATE1_REPORT.md).
 
 ---
 

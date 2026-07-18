@@ -1,0 +1,39 @@
+Gate 1 positivity log
+threshold min_eig >= -1e-08
+
+scan=Delta Delta=0.05 theta_R=1.571 min_eig=2.450e-01 positive=True
+scan=Delta Delta=0.07924 theta_R=1.571 min_eig=2.459e-01 positive=True
+scan=Delta Delta=0.1256 theta_R=1.571 min_eig=2.473e-01 positive=True
+scan=Delta Delta=0.1991 theta_R=1.571 min_eig=2.497e-01 positive=True
+scan=Delta Delta=0.3155 theta_R=1.571 min_eig=2.535e-01 positive=True
+scan=Delta Delta=0.5 theta_R=1.571 min_eig=2.594e-01 positive=True
+scan=Delta Delta=0.7924 theta_R=1.571 min_eig=2.678e-01 positive=True
+scan=Delta Delta=1.256 theta_R=1.571 min_eig=2.713e-01 positive=True
+scan=Delta Delta=1.991 theta_R=1.571 min_eig=2.419e-01 positive=True
+scan=Delta Delta=3.155 theta_R=1.571 min_eig=1.875e-01 positive=True
+scan=Delta Delta=5 theta_R=1.571 min_eig=1.287e-01 positive=True
+scan=Delta Delta=7.924 theta_R=1.571 min_eig=8.707e-02 positive=True
+scan=Delta Delta=12.56 theta_R=1.571 min_eig=7.089e-02 positive=True
+scan=Delta Delta=19.91 theta_R=1.571 min_eig=6.820e-02 positive=True
+scan=Delta Delta=31.55 theta_R=1.571 min_eig=6.807e-02 positive=True
+scan=Delta Delta=50 theta_R=1.571 min_eig=6.807e-02 positive=True
+scan=theta_R Delta=0.3 theta_R=0 min_eig=2.629e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=0.2618 min_eig=2.629e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=0.5236 min_eig=2.623e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=0.7854 min_eig=2.603e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=1.047 min_eig=2.571e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=1.309 min_eig=2.542e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=1.571 min_eig=2.530e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=1.833 min_eig=2.539e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=2.094 min_eig=2.568e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=2.356 min_eig=2.608e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=2.618 min_eig=2.648e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=2.88 min_eig=2.677e-01 positive=True
+scan=theta_R Delta=0.3 theta_R=3.142 min_eig=2.688e-01 positive=True
+scan=control Delta=0.3 theta_R=1.571 min_eig=2.530e-01 positive=True
+scan=control Delta=0.3 theta_R=0 min_eig=2.629e-01 positive=True
+scan=control Delta=20 theta_R=1.571 min_eig=6.820e-02 positive=True
+scan=control Delta=20 theta_R=0 min_eig=1.445e-08 positive=True
+scan=control Delta=2 theta_R=1.571 min_eig=2.414e-01 positive=True
+
+failures: 0 / 34

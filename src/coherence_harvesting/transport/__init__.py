@@ -4,6 +4,7 @@ from .spin_valve import SpinValveParams, lead_gamma_matrix, free_dot_hamiltonian
 from .nonsecular import lead_liouvillian, evolve_leads
 from .engine import CollisionEngine, EngineResult
 from .observables import electrical_power, heat_current_proxy
+from .diagnostics import ness_diagnostics, base_params
 
 __all__ = [
     "SpinValveParams",
@@ -15,4 +16,6 @@ __all__ = [
     "EngineResult",
     "electrical_power",
     "heat_current_proxy",
+    "ness_diagnostics",
+    "base_params",
 ]
