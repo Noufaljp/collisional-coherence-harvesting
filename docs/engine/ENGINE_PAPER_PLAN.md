@@ -81,13 +81,11 @@ Companion formulas (map, ergotropy, rate match, accessibility) appear as **lemma
 
 ### Stage 4 — Manuscript
 
-1. Intro  
-2. Companion lemmas (short)  
-3. Transport model  
-4. Gate results  
-5. Engine + tradeoff  
-6. Discussion (accessibility, costs)  
-7. SI = companion derivations  
+- [x] v1 draft: `engine_paper/main.tex` + `main.pdf` (~4 pp)
+- [x] Paper figures via `scripts/stage4_paper_support.py` → `engine_paper/figures/`
+- [x] Numbers frozen in `results/stage4/paper_numbers.json`
+- [ ] Coauthor pass / expand SI companion appendix into the PDF
+- [ ] Journal target lock (PRE/PRA)  
 
 ---
 
@@ -111,7 +109,8 @@ Both pass       → build full engine paper; companion = SI
 | 2026-07-18 | Gate 1 boost / gap-fill | $\|C\|$ raised to **~0.14** via $p$, bias, small $\Delta$, tilt. See `results/gate1/GATE1_BOOST_REPORT.md` |
 | 2026-07-18 | Gate 2 harvest | **GO**: one-shot $\mathcal{W}_A>0$, stroboscopic residual $C$, regeneration; $\alpha=1/2$ has $\mathcal{W}_{\rm coh}=0$. See `results/gate2/GATE2_REPORT.md` |
 | 2026-07-18 | Stage 2 currents | Lead-resolved currents + bookkeeping. See `results/stage2/STAGE2_REPORT.md` |
-| 2026-07-18 | Stage 3 story | **Engine story works:** 5183 NESS hits with $P_{\rm el}>0$ & $|C|>0.01$; chosen TE window keeps $P_{\rm el}>0$ on 100% of rate scan; coherent collisions give $P_{\rm erg}>0$, incoherent/collinear give $0$. Story tag `thermoelectric_engine_plus_battery`. See `results/stage3/STAGE3_REPORT.md` |
+| 2026-07-18 | Stage 3 story | **Engine story works.** See `results/stage3/STAGE3_REPORT.md` |
+| 2026-07-18 | Stage 4 draft | Engine manuscript v1 + support figures (load sweep, resource map, dual rate, controls). See `engine_paper/main.pdf`, `results/stage4/` |
 
 ---
 

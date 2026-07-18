@@ -1,0 +1,84 @@
+{
+  "window": {
+    "epsilon": 1.0,
+    "Delta": 0.2,
+    "theta_R": 0.6,
+    "p_L": 0.9,
+    "p_R": 0.9,
+    "mu_L": -0.3,
+    "mu_R": 0.3,
+    "T_L": 2.0,
+    "T_R": 0.25
+  },
+  "ness_Pel": 0.13165623272078344,
+  "ness_C": 0.042270014554485175,
+  "rate_Pel_min": 0.09688804386859441,
+  "rate_Pel_max": 0.12813002634207718,
+  "rate_Perg_max": 0.00026570717249931877,
+  "controls": [
+    {
+      "control": "coherent",
+      "P_el": 0.1181925082363549,
+      "P_erg": 6.575674861908354e-05,
+      "W_coh": 9.863512292862531e-05,
+      "W_inc": 0.0,
+      "abs_C": 0.0446174446574246,
+      "converged": 1
+    },
+    {
+      "control": "matched",
+      "P_el": 0.12764140717759456,
+      "P_erg": 5.739875751806697e-07,
+      "W_coh": 8.609813627710045e-07,
+      "W_inc": 0.0,
+      "abs_C": 0.03731463347430094,
+      "converged": 1
+    },
+    {
+      "control": "incoherent",
+      "P_el": 0.12636934182320658,
+      "P_erg": 0.0,
+      "W_coh": 0.0,
+      "W_inc": 0.0,
+      "abs_C": 0.0,
+      "converged": 1
+    },
+    {
+      "control": "none",
+      "P_el": 0.13165623272078325,
+      "P_erg": 0.0,
+      "W_coh": 0.0,
+      "W_inc": 0.0,
+      "abs_C": 0.04227001455448516,
+      "converged": 1
+    },
+    {
+      "control": "dephasing",
+      "P_el": 0.13965682371585048,
+      "P_erg": 0.0,
+      "W_coh": 0.0,
+      "W_inc": 0.0,
+      "abs_C": 0.0,
+      "converged": 1
+    },
+    {
+      "control": "alpha_half",
+      "P_el": 0.12775289100223802,
+      "P_erg": 0.0,
+      "W_coh": 0.0,
+      "W_inc": 0.0,
+      "abs_C": 0.03722847060334939,
+      "converged": 1
+    },
+    {
+      "control": "collinear",
+      "P_el": 0.12257329079660123,
+      "P_erg": 0.0,
+      "W_coh": 0.0,
+      "W_inc": 0.0,
+      "abs_C": 0.0,
+      "converged": 1
+    }
+  ],
+  "load_engine_branch": true
+}
