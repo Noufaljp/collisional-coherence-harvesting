@@ -181,15 +181,17 @@ Use (or lightly polish) existing outputs in `figures/`:
 
 ---
 
-## 7. Explicit non-claims (put in text)
+## 7. What to say (and what not to put in the paper)
 
-1. We do **not** claim that exporting coherence restores collinear spin-valve electrical power.  
-2. We do **not** claim single-ancilla coherent ergotropy is free work without a phase reference.  
-3. We do **not** claim two ancillas always unlock the resource.  
-4. We do **not** present the spin-valve numerics in the repo as a finished device theory.  
-5. Ergotropy is **not** added as an extra energy current in the first law.  
-6. arXiv:2602.18300 (minimal thermal-qubit RI no-go) is only a **background RI cite**, not a central comparison—do not over-discuss.  
-7. Gross \(P_{\rm erg}\) is not a complete net device efficiency without preparation / phase-reference costs.
+**In the paper (reader-facing):**
+1. Total ergotropy is an upper bound; one-copy coherent part needs a phase reference.
+2. Two copies do not always unlock the resource (thresholds).
+3. Gross \(P_{\rm erg}\) is not a full net efficiency without preparation costs (optional, Discussion).
+
+**Do not put in the paper** (internal history only):
+- “We do not restore collinear spin-valve power” — that was a *discarded* project idea; outsiders do not know it, and stating it confuses the story.
+- Long first-law sermons about ergotropy as an energy current — only needed if you write a full energy-balance transport engine paper.
+- Over-discussion of arXiv:2602.18300 (background RI cite only).
 
 ---
 
