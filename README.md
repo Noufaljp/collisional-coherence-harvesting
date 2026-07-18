@@ -14,6 +14,9 @@ Theory notes live in [`notes/`](notes/).
 **Living publication checklist (for agents and collaborators):**  
 [`docs/PUBLICATION_READINESS.md`](docs/PUBLICATION_READINESS.md) — what is done, what remains, priorities, and acceptance criteria. Update it whenever you finish a task.
 
+**Small paper scope (what forms the first publication):**  
+[`docs/SMALL_PAPER_SCOPE.md`](docs/SMALL_PAPER_SCOPE.md) — companion-only claim, results R1–R8, figures, non-claims, writing remaining.
+
 ---
 
 ## Quick start
