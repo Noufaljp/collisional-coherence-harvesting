@@ -1,0 +1,897 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+\hypersetup{colorlinks=true, linkcolor=blue!50!black, citecolor=blue!50!black, urlcolor=blue!50!black}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Collisional coherence harvesting}
+\rhead{Derivations and execution plan}
+\cfoot{\thepage}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{14pt}
+\setlist[itemize]{topsep=0.2em,itemsep=0.15em}
+\setlist[enumerate]{topsep=0.2em,itemsep=0.2em}
+
+\titleformat{\section}{\large\bfseries\color{blue!35!black}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{blue!25!black}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bra}[1]{\langle #1|}
+\newcommand{\proj}[1]{|#1\rangle\langle #1|}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\id}{\mathbb{1}}
+\newcommand{\cst}{\cos\theta}
+\newcommand{\sst}{\sin\theta}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\Dcal}{\mathcal{D}}
+
+\definecolor{boxgray}{RGB}{245,247,250}
+\definecolor{boxblue}{RGB}{230,241,255}
+\newenvironment{resultbox}{\begin{quote}\small}{\end{quote}}
+\newenvironment{notebox}{\begin{quote}\small}{\end{quote}}
+
+\title{\textbf{Collisional Harvesting of Dissipatively Stabilized Coherence}\\
+\large Detailed derivations, physical repairs, and step-by-step execution plan}
+\author{Prepared for Noufal Jaseem}
+\date{18 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{notebox}
+\textbf{Purpose of this note.} This document consolidates the companion-model derivations developed so far, adds the finite-gap resonant repair, gives a physically safer bright/dark bath construction, derives the finite-phase power law, corrects the finite-coupling constraint, and states exactly where the project is currently not closed. The goal is to make the companion model ready as a self-contained analytic appendix before adding the full spin-valve transport engine.
+
+\textbf{Status (18 July 2026).} These derivations have been integrated into the main research note \texttt{coherence\_harvesting\_note.tex} (and its PDF). Keep this file as a technical appendix / working derivation pad; prefer the integrated note for reading and for drafting a paper.
+\end{notebox}
+
+\tableofcontents
+\newpage
+
+\section{Executive status}
+
+The project is now best divided into two layers.
+
+\begin{enumerate}
+\item \textbf{Companion model:} a V-type system with bath-stabilized doublet coherence, repeatedly coupled to a stream of spin ancillas. This is analytically tractable and should be completed first.
+\item \textbf{Full engine:} a non-collinear spin-valve transport device with a collision tape. This should be added only after the companion model is physically closed.
+\end{enumerate}
+
+The present document concerns the first layer. The central result already visible is an impedance-matching law:
+\begin{equation}
+\Gamma_{\rm ext}=r(1-\cos\theta)\simeq \gamma_C,
+\end{equation}
+where $r$ is the collision rate, $\theta=g\tau$ is the exchange angle, and $\gamma_C$ is the coherence regeneration rate. In the simplest zero-phase, weak-extraction limit, the maximum harvesting power scales as
+\begin{equation}
+P_{\rm erg}^{\rm max}\sim \frac{\gamma_C\,\Delta\,c_0^2}{2|z_A|},
+\end{equation}
+with $c_0$ the stabilized system coherence and $\Delta$ the physical ancilla gap. The key point is that the rate is linear in the bath regrowth rate and quadratic in the stabilized coherence.
+
+\subsection{Main corrections added in this version}
+
+\begin{longtable}{p{0.28\linewidth}p{0.32\linewidth}p{0.32\linewidth}}
+\toprule
+Issue & Earlier/proposed statement & Corrected statement \\
+\midrule
+Exact degeneracy & Degenerate doublet plus nonzero ancilla ergotropy can be strictly work-free. & If the system doublet is exactly degenerate, strict energy conservation requires zero ancilla gap. Nonzero ergotropy requires a finite matched splitting $\Delta_A=\Delta>0$. \\
+Bright/dark bath & Symmetric bright--dark mixing $\kappa$ regenerates the bright state. & Symmetric mixing equilibrates bright and dark populations and kills the steady coherence. A directed dark-leakage or repumping channel is needed. \\
+Finite-coupling constraint & $\theta_{\min}\sim\sqrt{2\gamma_C/g}$. & With $\theta=g\tau$ and $\tau\le 1/r$, the small-angle impedance-matched constraint is $\theta_{\min}\sim 2\gamma_C/g$; with finite phase it becomes $2\gamma_C\sqrt{1+\delta^2}/g$. \\
+Small-angle optimum & $x_{\rm opt}=\eps+\eps^2/2+7\eps^3/24+\cdots$. & The $\eps^3$ coefficient vanishes: $x_{\rm opt}=\eps+\eps^2/2-\eps^4/4+\cdots$. \\
+Two-copy accessibility & Two ancillas automatically unlock one copy's coherent ergotropy. & Not generally true. The two-copy twirled state gives a precise threshold. In the weak ground-ancilla regime the pair-accessible work is typically zero; a larger tape or explicit phase reference is required. \\
+\bottomrule
+\end{longtable}
+
+\section{Model definitions and conventions}
+
+\subsection{System variables}
+
+The companion system is a V-type three-level object with ground state $\ket{0}$ and doublet states $\ket{1},\ket{2}$. In the original transport language, these doublet states play the role of the singly occupied spin states.
+
+For the doublet block define
+\begin{equation}
+ s=\rho_{11}+\rho_{22},\qquad d=\rho_{11}-\rho_{22},\qquad C=\rho_{12}.
+\end{equation}
+Here $s$ is the doublet weight, $d$ is the population imbalance in the energy basis, and $C$ is the coherence to be harvested.
+
+The bright and dark states are
+\begin{equation}
+\ket{B}=\frac{\ket{1}+\ket{2}}{\sqrt2},\qquad
+\ket{D}=\frac{\ket{1}-\ket{2}}{\sqrt2}.
+\end{equation}
+If $C$ is real,
+\begin{equation}
+ p_B=\frac{s}{2}+C,
+ \qquad
+ p_D=\frac{s}{2}-C,
+ \qquad
+ p_B-p_D=2C.
+\end{equation}
+Thus the ``coherence'' is equivalently a bright--dark population imbalance.
+
+\subsection{Ancilla}
+
+Each ancilla is a qubit with input state
+\begin{equation}
+\rho_A^{\rm in}=(1-\alpha)\proj{\downarrow}+\alpha\proj{\uparrow}.
+\end{equation}
+The physically relevant operating point for local ancilla ergotropy is usually $\alpha=0$, i.e. ground-state ancillas. The matched-population point $\alpha=1/2$ is useful as a diagnostic control but gives zero local ancilla coherence in a single collision.
+
+\section{Finite-gap, work-free resonant repair}
+
+\subsection{Why exact degeneracy alone is not enough}
+
+Take a degenerate doublet,
+\begin{equation}
+H_S=\omega(\proj{1}+\proj{2}),
+\end{equation}
+and an ancilla Hamiltonian
+\begin{equation}
+H_A=\omega_a\proj{\uparrow}_A.
+\end{equation}
+The exchange interaction is
+\begin{equation}
+H_{\rm int}=\hbar g\bigl(\ket{1\downarrow_A}\bra{2\uparrow_A}+\ket{2\uparrow_A}\bra{1\downarrow_A}\bigr).
+\end{equation}
+The two coupled states have free energies
+\begin{equation}
+E_{1\downarrow}=\omega,
+\qquad
+E_{2\uparrow}=\omega+\omega_a.
+\end{equation}
+Therefore
+\begin{equation}
+[H_S+H_A,H_{\rm int}]=0
+\quad\Longleftrightarrow\quad
+\omega_a=0.
+\end{equation}
+But if $\omega_a=0$, the ancilla Hamiltonian is proportional to the identity and the ancilla carries no energetic ergotropy. Hence exact degeneracy, strict work-freeness, and nonzero ancilla ergotropy are mutually incompatible unless the gap is repaired.
+
+\subsection{Finite matched splitting}
+
+Introduce a finite splitting in the doublet:
+\begin{equation}
+H_S=\omega(\proj{1}+\proj{2})+\frac{\Delta}{2}(\proj{1}-\proj{2}),
+\end{equation}
+and match the ancilla gap:
+\begin{equation}
+H_A=\Delta\proj{\uparrow}_A.
+\end{equation}
+Then the active states have identical total free energy:
+\begin{equation}
+E_{1\downarrow}=\omega+\frac{\Delta}{2},
+\qquad
+E_{2\uparrow}=\omega-\frac{\Delta}{2}+\Delta=\omega+\frac{\Delta}{2}.
+\end{equation}
+Therefore, on the active block,
+\begin{equation}
+H_S+H_A=\left(\omega+\frac{\Delta}{2}\right)\id_{2\times2},
+\end{equation}
+and
+\begin{resultbox}
+\begin{equation}
+[H_S+H_A,H_{\rm int}]=0.
+\end{equation}
+The collision is strictly energy-conserving while the ancilla gap is nonzero. Thus the collision can be work-free and the outgoing ancilla can carry nonzero ergotropy.
+\end{resultbox}
+
+The same interaction also preserves particle number in the intended exchange sector. In the spin-dot implementation,
+\begin{equation}
+[H_{\rm int},N_S+N_A]=0,
+\end{equation}
+and $H_{\rm int}$ is trivial on states outside the allowed singly occupied block.
+
+\section{Collision map in closed form}
+
+\subsection{Block unitary}
+
+Let
+\begin{equation}
+\theta=g\tau.
+\end{equation}
+On the active subspace $\{\ket{1\downarrow_A},\ket{2\uparrow_A}\}$,
+\begin{equation}
+U_\tau=e^{-iH_{\rm int}\tau/\hbar}=\begin{pmatrix}
+\cos\theta & -i\sin\theta\\
+-i\sin\theta & \cos\theta
+\end{pmatrix}.
+\end{equation}
+Equivalently,
+\begin{align}
+U\ket{1\downarrow}&=\cos\theta\ket{1\downarrow}-i\sin\theta\ket{2\uparrow},\\
+U\ket{2\uparrow}&=\cos\theta\ket{2\uparrow}-i\sin\theta\ket{1\downarrow}.
+\end{align}
+All other basis states are spectators.
+
+\subsection{System reduced map}
+
+The input is $\rho\otimes\rho_A^{\rm in}$. Since $\rho_A^{\rm in}$ is diagonal, the calculation separates into two classical branches.
+
+\subsubsection*{Branch $\downarrow_A$, weight $1-\alpha$}
+
+The active state is $\ket{1\downarrow_A}$, while $\ket{2\downarrow_A}$ is a spectator. After conjugation by $U$ and tracing over the ancilla,
+\begin{align}
+\rho_{11}&\mapsto \cos^2\theta\,\rho_{11},\\
+\rho_{22}&\mapsto \rho_{22}+\sin^2\theta\,\rho_{11},\\
+C&\mapsto \cos\theta\,C.
+\end{align}
+
+\subsubsection*{Branch $\uparrow_A$, weight $\alpha$}
+
+The active state is now $\ket{2\uparrow_A}$, while $\ket{1\uparrow_A}$ is a spectator. The mirrored result is
+\begin{align}
+\rho_{22}&\mapsto \cos^2\theta\,\rho_{22},\\
+\rho_{11}&\mapsto \rho_{11}+\sin^2\theta\,\rho_{22},\\
+C&\mapsto \cos\theta\,C.
+\end{align}
+
+\subsubsection*{Weighted sum}
+
+Combining both branches,
+\begin{align}
+\rho'_{11}&=\rho_{11}-\sin^2\theta\big[(1-\alpha)\rho_{11}-\alpha\rho_{22}\big],\\
+\rho'_{22}&=\rho_{22}+\sin^2\theta\big[(1-\alpha)\rho_{11}-\alpha\rho_{22}\big],\\
+C'&=\cos\theta\,C.
+\end{align}
+Using
+\begin{equation}
+(1-\alpha)\rho_{11}-\alpha\rho_{22}
+=\frac12\big[s(1-2\alpha)+d\big],
+\end{equation}
+we obtain
+\begin{resultbox}
+\begin{align}
+s'&=s,\\
+d'&=\cos^2\theta\,d-\sin^2\theta(1-2\alpha)s,\\
+C'&=\cos\theta\,C.
+\end{align}
+\end{resultbox}
+
+The invariant $s'=s$ is the superselection statement in miniature: the exchange never moves weight between the doublet and the ground sector.
+
+\subsection{Ancilla reduced map}
+
+Tracing over the system gives
+\begin{equation}
+p_\uparrow^{\rm out}=\alpha+\sin^2\theta\big[(1-\alpha)\rho_{11}-\alpha\rho_{22}\big]
+=\alpha+\frac{\sin^2\theta}{2}\big[s(1-2\alpha)+d\big],
+\end{equation}
+and
+\begin{equation}
+\rho_{\uparrow\downarrow}^{A,{\rm out}}=-i\sin\theta(1-2\alpha)C.
+\end{equation}
+The Bloch components of the outgoing ancilla are
+\begin{align}
+x_A&=2\operatorname{Re}\rho_{\uparrow\downarrow}^{A,{\rm out}},\\
+y_A&=-2\operatorname{Im}\rho_{\uparrow\downarrow}^{A,{\rm out}},\\
+z_A&=2p_\uparrow^{\rm out}-1.
+\end{align}
+For real $C$ this reduces to
+\begin{equation}
+x_A=0,
+\qquad
+ y_A=2\sin\theta(1-2\alpha)C,
+\qquad
+ z_A=-(1-2\alpha)+\sin^2\theta\big[s(1-2\alpha)+d\big].
+\end{equation}
+
+\subsection{The $\alpha=1/2$ null result}
+
+At $\alpha=1/2$,
+\begin{equation}
+\rho_{\uparrow\downarrow}^{A,{\rm out}}=0
+\end{equation}
+for every input $C$. Nevertheless, the system coherence is still reduced:
+\begin{equation}
+C\mapsto\cos\theta\,C.
+\end{equation}
+The missing amplitude is not in the local ancilla state but in system--ancilla correlations. The surviving joint term is proportional to
+\begin{equation}
+\frac{i\sin\theta}{2}C(\proj{1}-\proj{2})\otimes\ket{\uparrow}\bra{\downarrow}_A+{\rm h.c.}
+\end{equation}
+Thus $\alpha=1/2$ is a clean \emph{back-action control}: it removes system coherence without locally charging the ancilla.
+
+\section{Stroboscopic fixed point with finite gap}
+
+\subsection{Phenomenological reset map}
+
+During the waiting time $\tau_c$, finite splitting produces free precession
+\begin{equation}
+C\mapsto e^{-i\Delta\tau_c}C.
+\end{equation}
+Let
+\begin{equation}
+\phi=\Delta\tau_c,
+\qquad
+q_C=e^{-\gamma_C\tau_c}.
+\end{equation}
+In the simplest phase-locked phenomenological model,
+\begin{equation}
+C_{n+1}=q_C e^{-i\phi}\cos\theta\, C_n+(1-q_C)c_0.
+\end{equation}
+The fixed point is
+\begin{resultbox}
+\begin{equation}
+C^*=\frac{(1-q_C)c_0}{1-q_C e^{-i\phi}\cos\theta}.
+\end{equation}
+\end{resultbox}
+The magnitude is
+\begin{equation}
+|C^*|=\frac{(1-q_C)|c_0|}{\sqrt{1+q_C^2\cos^2\theta-2q_C\cos\theta\cos\phi}}.
+\end{equation}
+
+Population variables do not acquire a Hamiltonian phase. With a single population relaxation factor $q=e^{-\gamma_d\tau_c}$ and target $d_{\rm ss}=0$,
+\begin{equation}
+s^*=s_{\rm ss},
+\end{equation}
+\begin{equation}
+d^*=-\frac{q\sin^2\theta(1-2\alpha)s_{\rm ss}}{1-q\cos^2\theta}.
+\end{equation}
+
+\begin{notebox}
+\textbf{Important physical caveat.} A time-independent thermal bath for a non-degenerate doublet does not generically stabilize a lab-frame coherence $c_0$. A finite-gap coherent target is a phase-locked, driven, rotating-frame, or near-degenerate nonsecular construction. This is acceptable as a companion model, but the paper must state which physical mechanism fixes the phase. If strict autonomy with a single time-independent thermal bath is required, the safest regime is $\Delta\ll\gamma_C$, with ergotropy proportional to the small but finite matched gap.
+\end{notebox}
+
+\section{A physical bright/dark bath: what works and what does not}
+
+\subsection{Symmetric bright--dark mixing kills the resource}
+
+A proposed minimal bath was
+\begin{align}
+\dot p_B&=\Gamma_\uparrow p_0-\Gamma_\downarrow p_B-\kappa(p_B-p_D),\\
+\dot p_D&=\kappa(p_B-p_D),\\
+p_0&=1-p_B-p_D.
+\end{align}
+At steady state with $\kappa>0$, the second equation gives
+\begin{equation}
+p_B=p_D.
+\end{equation}
+Therefore
+\begin{equation}
+C=\frac{p_B-p_D}{2}=0.
+\end{equation}
+So symmetric bright--dark mixing does not regenerate coherence; it equilibrates the bright and dark populations and destroys the bright-state resource.
+
+\begin{resultbox}
+\textbf{Conclusion.} Symmetric bright--dark mixing is useful as a decoherence/noise control, not as the bath model that sustains coherence. A renewable resource requires directed dark leakage or a mechanism that preferentially repumps the bright state.
+\end{resultbox}
+
+\subsection{Directed dark leakage model}
+
+A minimal physically safer model is
+\begin{align}
+\dot p_B&=\Gamma_\uparrow p_0-\Gamma_\downarrow p_B,\\
+\dot p_D&=-\kappa_D p_D,\\
+p_0&=1-p_B-p_D.
+\end{align}
+Here the bath pumps and relaxes the bright state, while dark population leaks back to the reservoir/ground sector at rate $\kappa_D$. In vector form $v=(p_B,p_D)^T$,
+\begin{equation}
+\dot v=Mv+b,
+\end{equation}
+with
+\begin{equation}
+M=\begin{pmatrix}
+-(\Gamma_\uparrow+\Gamma_\downarrow)&-\Gamma_\uparrow\\
+0&-\kappa_D
+\end{pmatrix},
+\qquad
+b=\begin{pmatrix}\Gamma_\uparrow\\0\end{pmatrix}.
+\end{equation}
+The steady state is
+\begin{equation}
+p_D^{\rm ss}=0,
+\qquad
+p_B^{\rm ss}=\frac{\Gamma_\uparrow}{\Gamma_\uparrow+\Gamma_\downarrow}\equiv s_{\rm ss}.
+\end{equation}
+If detailed balance is imposed,
+\begin{equation}
+\frac{\Gamma_\downarrow}{\Gamma_\uparrow}=e^{\beta\omega},
+\end{equation}
+then
+\begin{equation}
+s_{\rm ss}=\frac{1}{1+e^{\beta\omega}},
+\qquad
+c_0=\frac{s_{\rm ss}}{2}.
+\end{equation}
+
+\subsection{Exact waiting-time map for directed leakage}
+
+Let
+\begin{equation}
+A=\Gamma_\uparrow+\Gamma_\downarrow,
+\qquad
+q_B=e^{-A\tau_c},
+\qquad
+q_D=e^{-\kappa_D\tau_c}.
+\end{equation}
+Starting from post-collision values $(B_+,D_+)$, the waiting evolution gives
+\begin{equation}
+D_-=q_DD_+,
+\end{equation}
+while
+\begin{equation}
+B_-=q_B B_+ + s_{\rm ss}(1-q_B)
+-\Gamma_\uparrow D_+\frac{q_D-q_B}{A-\kappa_D},
+\end{equation}
+for $A\ne \kappa_D$. The resonant case $A=\kappa_D$ is obtained by the limit
+\begin{equation}
+\frac{q_D-q_B}{A-\kappa_D}\longrightarrow \tau_c e^{-A\tau_c}.
+\end{equation}
+
+The collision in the bright/dark population variables is
+\begin{equation}
+\begin{pmatrix}B_+\\D_+\end{pmatrix}
+=R_\theta
+\begin{pmatrix}B_-\\D_-\end{pmatrix},
+\qquad
+R_\theta=\frac12\begin{pmatrix}1+\cos\theta&1-\cos\theta\\1-\cos\theta&1+\cos\theta\end{pmatrix}.
+\end{equation}
+Thus the full one-cycle map is affine:
+\begin{equation}
+v_{n+1}=\mathcal B R_\theta v_n+b_{\mathcal B},
+\end{equation}
+where
+\begin{equation}
+\mathcal B=\begin{pmatrix}
+q_B&-\Gamma_\uparrow\dfrac{q_D-q_B}{A-\kappa_D}\\
+0&q_D
+\end{pmatrix},
+\qquad
+b_{\mathcal B}=\begin{pmatrix}s_{\rm ss}(1-q_B)\\0\end{pmatrix}.
+\end{equation}
+The fixed point is therefore
+\begin{resultbox}
+\begin{equation}
+v^*=\left(\id-\mathcal B R_\theta\right)^{-1}b_{\mathcal B}.
+\end{equation}
+\end{resultbox}
+This is a closed two-dimensional problem and is the recommended replacement for the symmetric-mixing model.
+
+\section{Qubit ergotropy of the outgoing ancilla}
+
+\subsection{General formula}
+
+For
+\begin{equation}
+H_A=\Delta\proj{\uparrow},
+\end{equation}
+write the output qubit in Bloch form,
+\begin{equation}
+\rho_A=\frac12(\id+x_A\sigma_x+y_A\sigma_y+z_A\sigma_z),
+\end{equation}
+where $z_A=p_\uparrow-p_\downarrow=2p_\uparrow-1$ and
+\begin{equation}
+|r_A|=\sqrt{x_A^2+y_A^2+z_A^2}.
+\end{equation}
+The energy is
+\begin{equation}
+E_A=\Delta p_\uparrow=\frac{\Delta}{2}(1+z_A).
+\end{equation}
+The passive state has excited population $(1-|r_A|)/2$, hence passive energy
+\begin{equation}
+E_A^{\rm pass}=\frac{\Delta}{2}(1-|r_A|).
+\end{equation}
+Therefore
+\begin{resultbox}
+\begin{equation}
+\W_A=E_A-E_A^{\rm pass}=\frac{\Delta}{2}(z_A+|r_A|).
+\end{equation}
+\end{resultbox}
+If $z_A<0$, the population state is passive and the ergotropy is purely coherent:
+\begin{equation}
+\W_A=\W_{A,{\rm coh}}=\frac{\Delta}{2}(|r_A|-|z_A|).
+\end{equation}
+
+\subsection{Ground-state ancilla, $\alpha=0$}
+
+For $\alpha=0$,
+\begin{equation}
+z_A=-1+\sin^2\theta(s^*+d^*),
+\end{equation}
+and
+\begin{equation}
+|\rho_{\uparrow\downarrow}^{A,{\rm out}}|=\sin\theta|C^*|.
+\end{equation}
+Thus
+\begin{equation}
+|r_A|=\sqrt{z_A^2+4\sin^2\theta|C^*|^2},
+\end{equation}
+and
+\begin{resultbox}
+\begin{equation}
+\Delta\W_A=\frac{\Delta}{2}\left[z_A+\sqrt{z_A^2+4\sin^2\theta|C^*|^2}\right].
+\end{equation}
+\end{resultbox}
+For weak extraction,
+\begin{equation}
+\sin\theta|C^*|\ll |z_A|,
+\end{equation}
+so
+\begin{equation}
+\Delta\W_A\simeq \frac{\Delta\sin^2\theta|C^*|^2}{|z_A|}.
+\end{equation}
+
+\section{Charging power and optimum: zero precession phase}
+
+\subsection{Power function}
+
+First set $\phi=0$ and use a single coherence rate $\gamma_C=\gamma$. Let
+\begin{equation}
+x=\gamma\tau_c=\frac{\gamma}{r},
+\qquad
+q=e^{-x},
+\qquad
+c=\cos\theta.
+\end{equation}
+Then
+\begin{equation}
+\frac{C^*}{c_0}=\frac{1-e^{-x}}{1-ce^{-x}}.
+\end{equation}
+In the weak-extraction approximation,
+\begin{equation}
+P_{\rm erg}(r)=r\Delta\W_A
+=\frac{\gamma\Delta\sin^2\theta c_0^2}{|z_A|}f(x),
+\end{equation}
+where
+\begin{equation}
+f(x)=\frac1x\left(\frac{1-e^{-x}}{1-ce^{-x}}\right)^2.
+\end{equation}
+
+The two limits are automatic:
+\begin{align}
+r\to0\ (x\to\infty):&\qquad P_{\rm erg}\propto r\to0,\\
+r\to\infty\ (x\to0):&\qquad P_{\rm erg}\propto \frac1r\to0.
+\end{align}
+Thus a finite optimum exists.
+
+\subsection{Stationarity condition}
+
+The condition $d\ln f/dx=0$ gives
+\begin{equation}
+-\frac1x+\frac{2e^{-x}(1-c)}{(1-e^{-x})(1-ce^{-x})}=0,
+\end{equation}
+or
+\begin{equation}
+2xe^{-x}(1-c)=(1-e^{-x})(1-ce^{-x}).
+\end{equation}
+Set
+\begin{equation}
+\eps=1-c=1-\cos\theta.
+\end{equation}
+Solving perturbatively gives
+\begin{resultbox}
+\begin{equation}
+x_{\rm opt}=\eps+\frac{\eps^2}{2}-\frac{\eps^4}{4}+O(\eps^5).
+\end{equation}
+There is no $\eps^3$ term.
+\end{resultbox}
+At leading order,
+\begin{equation}
+r_{\rm opt}=\frac{\gamma}{x_{\rm opt}}\simeq \frac{\gamma}{1-\cos\theta}.
+\end{equation}
+Equivalently,
+\begin{resultbox}
+\begin{equation}
+\Gamma_{\rm ext}=r(1-\cos\theta)\simeq \gamma.
+\end{equation}
+\end{resultbox}
+This is the impedance-matching condition: the extraction rate equals the bath's coherence-regrowth rate.
+
+\subsection{System coherence at the optimum}
+
+Using the stationarity equation, one finds
+\begin{equation}
+\left.\frac{C^*}{c_0}\right|_{\rm opt}=\frac{1}{2-x_{\rm opt}}=\frac12+O(\eps).
+\end{equation}
+The system is held at about half of its free steady coherence at maximum power.
+
+\subsection{Harvesting prefactor and plateau}
+
+Define
+\begin{equation}
+\mathcal C(\theta)=\sin^2\theta\,f(x_{\rm opt}).
+\end{equation}
+Using the expansion above,
+\begin{resultbox}
+\begin{equation}
+\mathcal C(\theta)=\frac12-\frac{\eps^2}{24}-\frac{\eps^3}{24}+O(\eps^4).
+\end{equation}
+\end{resultbox}
+Since $\eps=\theta^2/2+O(\theta^4)$,
+\begin{equation}
+\mathcal C(\theta)=\frac12-\frac{\theta^4}{96}+O(\theta^6).
+\end{equation}
+The plateau is therefore very flat: the first correction is fourth order in $\theta$.
+
+The small-angle harvesting bound is
+\begin{resultbox}
+\begin{equation}
+P_{\rm erg}^{\rm max}\simeq \frac{\gamma\Delta c_0^2}{2|z_A|}.
+\end{equation}
+\end{resultbox}
+For the ideal V-system target $c_0=s_{\rm ss}/2$ and $s_{\rm ss}=1/(1+e^{\beta\omega})$,
+\begin{equation}
+P_{\rm erg}^{\rm max}\simeq \frac{\gamma\Delta}{8|z_A|}\frac{1}{(1+e^{\beta\omega})^2}.
+\end{equation}
+
+\section{Charging power with finite precession phase}
+
+\subsection{Exact weak-extraction power function}
+
+Now keep the resonant finite-gap phase
+\begin{equation}
+\phi=\Delta\tau_c=\frac{\Delta}{r}.
+\end{equation}
+Let
+\begin{equation}
+\delta=\frac{\Delta}{\gamma_C},
+\qquad
+x=\frac{\gamma_C}{r},
+\qquad
+\phi=\delta x.
+\end{equation}
+Then
+\begin{equation}
+|C^*|^2=(1-e^{-x})^2c_0^2
+\left[1+e^{-2x}\cos^2\theta-2e^{-x}\cos\theta\cos(\delta x)\right]^{-1}.
+\end{equation}
+Hence
+\begin{equation}
+P_{\rm erg}\propto \frac1x
+\frac{(1-e^{-x})^2}{1+e^{-2x}\cos^2\theta-2e^{-x}\cos\theta\cos(\delta x)}.
+\end{equation}
+
+\subsection{Small-angle finite-$\delta$ optimum}
+
+Let $\eps=1-\cos\theta\ll1$ and assume $x=O(\eps)$. Then, to leading order,
+\begin{equation}
+1+e^{-2x}c^2-2e^{-x}c\cos(\delta x)
+\simeq (x+\eps)^2+\delta^2x^2.
+\end{equation}
+The reduced objective is
+\begin{equation}
+f_\delta(x)\simeq \frac{x}{(x+\eps)^2+\delta^2x^2}.
+\end{equation}
+The stationarity condition gives
+\begin{equation}
+\eps^2-(1+\delta^2)x^2=0.
+\end{equation}
+Therefore
+\begin{resultbox}
+\begin{equation}
+x_{\rm opt}(\delta)\simeq\frac{\eps}{\sqrt{1+\delta^2}},
+\qquad
+r_{\rm opt}(\delta)\simeq\frac{\gamma_C\sqrt{1+\delta^2}}{1-\cos\theta}.
+\end{equation}
+\end{resultbox}
+The finite splitting increases the optimum collision rate because precession partially dephases the harvested quadrature.
+
+At this optimum,
+\begin{equation}
+\mathcal C_\delta(\theta)\equiv \sin^2\theta f_\delta(x_{\rm opt})
+\simeq \frac{1}{1+\sqrt{1+\delta^2}}.
+\end{equation}
+For $\delta=0$ this recovers $1/2$. For $\delta\gg1$ the bound is suppressed as $1/\delta$.
+
+Thus the finite-phase small-angle bound is
+\begin{resultbox}
+\begin{equation}
+P_{\rm erg}^{\rm max}(\delta)
+\simeq
+\frac{\gamma_C\Delta c_0^2}{|z_A|}\frac{1}{1+\sqrt{1+\delta^2}}.
+\end{equation}
+\end{resultbox}
+
+\begin{notebox}
+\textbf{Interpretation.} The finite gap is needed for nonzero ergotropy, but the same gap causes phase precession between collisions. The best regime is therefore a small but finite matched gap: large enough to define useful battery energy, small enough that $\delta=\Delta/\gamma_C$ does not strongly suppress the coherent harvesting channel.
+\end{notebox}
+
+\section{Finite coupling-strength realizability constraint}
+
+The formal maximum uses $\theta\to0$ and $r\to\infty$ while keeping $r(1-\cos\theta)$ fixed. This limit is not automatically realizable because
+\begin{equation}
+\theta=g\tau,
+\qquad
+\tau\le T=\frac1r.
+\end{equation}
+Therefore
+\begin{equation}
+\theta\le\frac{g}{r}.
+\end{equation}
+At the zero-phase optimum,
+\begin{equation}
+r\simeq\frac{2\gamma_C}{\theta^2}.
+\end{equation}
+Hence
+\begin{equation}
+\theta\le \frac{g\theta^2}{2\gamma_C},
+\end{equation}
+which implies
+\begin{resultbox}
+\begin{equation}
+\theta\gtrsim\frac{2\gamma_C}{g}.
+\end{equation}
+\end{resultbox}
+With finite precession parameter $\delta$,
+\begin{equation}
+r_{\rm opt}\simeq\frac{2\gamma_C\sqrt{1+\delta^2}}{\theta^2},
+\end{equation}
+so
+\begin{equation}
+\theta\gtrsim\frac{2\gamma_C\sqrt{1+\delta^2}}{g}.
+\end{equation}
+This is the correct linear constraint in $\gamma_C/g$, not a square-root constraint. Because the zero-phase plateau is flat as $\theta^4$, moderate $g/\gamma_C$ can still get very close to the formal bound.
+
+\section{Accessibility of coherent ergotropy}
+
+\subsection{Single ancilla}
+
+At $\alpha=0$ and $z_A<0$, the output ergotropy is coherent ergotropy. Without a phase reference, a single qubit's coherence between distinct energy levels is not operationally extractable by time-translation-covariant operations. Thus the report should distinguish
+\begin{equation}
+\W_{\rm total},\qquad \W_{\rm coh},\qquad \W_{\rm acc}.
+\end{equation}
+For one outgoing ancilla without a reference,
+\begin{equation}
+\W_{\rm acc}^{(1)}=0
+\end{equation}
+in the purely coherent, ground-biased operating regime.
+
+\subsection{Two-copy calculation: exact threshold}
+
+Let a single outgoing ancilla be
+\begin{equation}
+\rho_A=\begin{pmatrix}a&c\\c^*&b\end{pmatrix},
+\qquad
+ a+b=1,
+\qquad
+ a>b,
+\end{equation}
+with Hamiltonian $H_A=\Delta\proj{\uparrow}$. The product state $\rho_A^{\otimes2}$, after global energy dephasing, has energy blocks $E=0,\Delta,2\Delta$. The one-excitation block is
+\begin{equation}
+\begin{pmatrix}ab&|c|^2\\ |c|^2&ab\end{pmatrix},
+\end{equation}
+with eigenvalues
+\begin{equation}
+\lambda_\pm=ab\pm |c|^2.
+\end{equation}
+The other eigenvalues are
+\begin{equation}
+\lambda_0=a^2,
+\qquad
+\lambda_2=b^2.
+\end{equation}
+For a ground-biased state, the only possible two-copy activation occurs if the lower one-excitation eigenvalue falls below the two-excitation population:
+\begin{equation}
+b^2>ab-|c|^2.
+\end{equation}
+The accessible work from the two-copy energy-dephased state is therefore
+\begin{resultbox}
+\begin{equation}
+\W_{\rm acc}^{(2)}=\Delta\max\left\{0,\ |c|^2-b(a-b)\right\}.
+\end{equation}
+\end{resultbox}
+
+For the weak ground-ancilla harvesting regime,
+\begin{equation}
+b\simeq \frac{\sin^2\theta}{2}(s^*+d^*),
+\qquad
+|c|^2\simeq \sin^2\theta |C^*|^2.
+\end{equation}
+The activation condition is approximately
+\begin{equation}
+|C^*|^2\gtrsim \frac{s^*+d^*}{2}.
+\end{equation}
+Since positivity bounds $|C^*|^2\le \rho_{11}\rho_{22}\lesssim (s^*)^2/4$, this condition is generally not met for $s^*\le1$ in the weak regime. Hence two copies usually do \emph{not} unlock the single-copy coherent ergotropy.
+
+\begin{notebox}
+\textbf{Current conclusion on accessibility.} The safe statement is not that two ancillas automatically unlock the coherent ergotropy. The correct next calculation is the finite-$N$ accessible work of the outgoing tape, possibly including system-mediated correlations. Until that is done, the paper should present total ergotropy as an upper bound and accessible ergotropy only for a specified discharge model or an explicit phase reference.
+\end{notebox}
+
+\section{Step-by-step execution plan}
+
+\subsection{Package A: companion model, closed analytic version}
+
+\begin{enumerate}
+\item \textbf{Finalize the finite-gap resonant Hamiltonian.} Use $H_S$ with splitting $\Delta$ and $H_A=\Delta\proj{\uparrow}$. Keep $\Delta$ finite but small enough that phase suppression is controlled.
+\item \textbf{Use the verified collision map.} Implement and independently test the maps for $s,d,C$ and the outgoing ancilla Bloch vector.
+\item \textbf{Separate three bath models.}
+  \begin{enumerate}
+  \item Phenomenological phase-locked reset: use for analytic benchmark.
+  \item Directed dark-leakage bath: use as the minimal physical renewal model.
+  \item Symmetric bright--dark mixing: use only as a decoherence/noise control.
+  \end{enumerate}
+\item \textbf{Compute fixed points.} For the reset model use closed formulas. For directed leakage use $v^*=(\id-\mathcal B R_\theta)^{-1}b_{\mathcal B}$.
+\item \textbf{Compute exact ergotropy.} Always plot the exact expression before comparing with the weak formula.
+\item \textbf{Optimize power.} Verify the zero-phase impedance matching and finite-phase correction.
+\item \textbf{Quantify realizability.} Enforce $\theta\le g/r$ and report the reachable fraction of the ideal bound versus $g/\gamma_C$.
+\item \textbf{Handle accessibility honestly.} Report total coherent ergotropy; calculate one-copy and two-copy accessible pieces; label the finite-$N$ tape problem as open unless solved.
+\end{enumerate}
+
+\subsection{Package B: numerical checks}
+
+For each formula above, implement a direct finite-dimensional check.
+
+\begin{enumerate}
+\item Build the $6\times6$ joint Hamiltonian and unitary.
+\item Sample random valid $(s,d,C)$ satisfying positivity.
+\item Compare the explicit partial trace against the closed maps.
+\item Iterate the stroboscopic map numerically and compare with fixed-point formulas.
+\item Optimize exact $P_{\rm erg}(r)$ and compare with the weak-expression optimum.
+\item Plot $\mathcal C(\theta)$ and verify the $1/2-\theta^4/96$ plateau.
+\item Plot finite-phase suppression versus $\delta=\Delta/\gamma_C$ and verify the leading $1/(1+\sqrt{1+\delta^2})$ law.
+\end{enumerate}
+
+\subsection{Package C: figures for the paper/note}
+
+Recommended figures:
+
+\begin{enumerate}
+\item Diagram: bath pumps bright state, collisions drain bright--dark imbalance to the ancilla tape.
+\item Collision map validation: analytic versus numerical partial trace.
+\item Fixed point: $|C^*|/c_0$ versus $r/\gamma_C$ for several $\theta$.
+\item Power curve: $P_{\rm erg}(r)$ showing slow-collision and Zeno limits.
+\item Impedance matching: optimum at $\Gamma_{\rm ext}/\gamma_C\simeq1$.
+\item Plateau: $\mathcal C(\theta)$ versus $\theta$, highlighting the flat small-angle region.
+\item Finite gap: suppression versus $\delta=\Delta/\gamma_C$.
+\item Directed leakage bath: resource suppression versus $\kappa_D/\gamma_C$.
+\item Accessibility: total ergotropy versus one-copy and two-copy accessible work.
+\end{enumerate}
+
+\subsection{Package D: only after the companion model is closed}
+
+Move to the full spin-valve engine only after Package A--C are stable. The full engine then uses
+\begin{equation}
+\rho_D^{(n+1)}=\Tr_A\left\{U_\tau\left[e^{\mathcal L_{\rm leads}(T-\tau)}\rho_D^{(n)}\otimes\rho_A^{\rm in}\right]U_\tau^\dagger\right\},
+\end{equation}
+with a nonsecular lead generator that preserves the relevant spin coherence. Currents must be integrated over the same periodic state that produces the outgoing ancilla.
+
+The first full-engine deliverable should not be ``restoration of collinear power.'' It should be the tradeoff curve
+\begin{equation}
+(P_{\rm el},P_{\rm erg})
+\end{equation}
+plus controls that distinguish population resetting from genuine coherence harvesting.
+
+\section{Current stuck points and decisions still needed}
+
+\begin{longtable}{p{0.23\linewidth}p{0.36\linewidth}p{0.33\linewidth}}
+\toprule
+Issue & Why it matters & Recommended treatment \\
+\midrule
+Finite-gap coherent bath & A finite splitting causes precession; a stationary lab-frame coherence needs a phase reference, near-degenerate nonsecular physics, or a driven bath. & State the companion reset model as phase-locked. For a strictly autonomous model, keep $\Delta\ll\gamma_C$ and/or derive the actual V-system Liouvillian. \\
+Dark-state renewal & Perfectly aligned dipoles produce a dark state. Collision creates dark population, which may trap the resource. & Use directed dark leakage or explicit weak symmetry breaking. Do not use symmetric mixing as regeneration. \\
+Accessible work & Single-copy coherent ergotropy is not extractable without a phase reference. Two copies do not generically unlock it. & Treat total ergotropy as an upper bound; compute finite-$N$ tape accessibility or explicitly include a reference. \\
+Preparation cost & Ground-state ancillas are a low-entropy resource. & Report gross ergotropy first; later add reset free-energy cost $\Delta F_A=\Delta E_A-T_0\Delta S_A$. \\
+Full transport generator & Secular Lindblad may kill the spin coherence. & Use companion model first; then derive a nonsecular lead generator and monitor positivity. \\
+Narrative risk & Harvesting may not improve electrical power. & Frame the full engine as resource partitioning, not guaranteed power restoration. \\
+\bottomrule
+\end{longtable}
+
+\section{Recommended immediate next calculations}
+
+\begin{enumerate}
+\item Implement the directed dark-leakage fixed point and compare it against the reset map.
+\item Make the exact power curve using the exact ergotropy formula, not only the weak expansion.
+\item Numerically verify the finite-phase optimum and the $1/(1+\sqrt{1+\delta^2})$ suppression law.
+\item Compute the two-copy accessible work threshold and check whether any realistic parameter set activates it.
+\item Decide whether the companion model assumes an explicit phase reference. If yes, state it clearly. If no, derive or simulate the actual near-degenerate V-system Liouvillian.
+\end{enumerate}
+
+\section{Bottom line}
+
+The companion model is now a real analytic project. The collision algebra is sound, the finite-gap repair makes the work-free battery interpretation possible, and the impedance-matching result is a strong organizing principle. The most important remaining repair is the bath: symmetric bright--dark mixing destroys the coherence, so the model needs directed dark leakage or an explicitly phase-locked reset mechanism. The second important repair is operational: the total coherent ergotropy is not automatically accessible from individual outgoing ancillas. Once those two points are handled, the companion model will be strong enough to serve as the analytic foundation for the full spin-valve harvesting engine.
+
+\end{document}
