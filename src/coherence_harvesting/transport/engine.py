@@ -65,10 +65,11 @@ def collision_unitary(params: SpinValveParams) -> np.ndarray:
 
 
 def apply_collision(
-    rho_D: np.ndarray, params: SpinValveParams
+    rho_D: np.ndarray, params: SpinValveParams, *, alpha: float | None = None
 ) -> tuple[np.ndarray, np.ndarray]:
     """One exchange collision with a fresh ancilla; return (ρ_D', ρ_A_out)."""
-    alpha = params.alpha
+    if alpha is None:
+        alpha = params.alpha
     rho_A = np.diag([1.0 - alpha, alpha]).astype(complex)
     rho = np.kron(rho_D, rho_A)
     U = collision_unitary(params)
@@ -87,6 +88,42 @@ def apply_collision(
     return rho_D_out, rho_A_out
 
 
+def matched_population_alpha(rho_D: np.ndarray) -> float:
+    """Ancilla excited population matched to the *relative* spin populations.
+
+    Uses p_↑ / P_1 when P_1>0 so the ancilla diagonal matches the spin sector
+    (zero population gradient for the exchange block). Falls back to 0.5 if empty.
+    """
+    pu = float(np.real(rho_D[1, 1]))
+    pd = float(np.real(rho_D[2, 2]))
+    p1 = pu + pd
+    if p1 < 1e-14:
+        return 0.5
+    return pu / p1
+
+
+def apply_collision_matched(
+    rho_D: np.ndarray, params: SpinValveParams
+) -> tuple[np.ndarray, np.ndarray]:
+    """Coherent exchange with matched-population ancilla (coherence-focused control)."""
+    return apply_collision(rho_D, params, alpha=matched_population_alpha(rho_D))
+
+
+def apply_collision_incoherent(
+    rho_D: np.ndarray, params: SpinValveParams, *, alpha: float | None = None
+) -> tuple[np.ndarray, np.ndarray]:
+    """Phase-twirled / classical mixture of the exchange: no coherent charging channel.
+
+    Implements the collision channel after removing system coherences in the
+    spin sector *before* the unitary, so only population redistribution occurs.
+    """
+    rho = np.asarray(rho_D, dtype=complex).copy()
+    rho[1, 2] = 0.0
+    rho[2, 1] = 0.0
+    rho = 0.5 * (rho + rho.conj().T)
+    return apply_collision(rho, params, alpha=alpha)
+
+
 def _dot_energy(rho: np.ndarray, params: SpinValveParams) -> float:
     H = free_dot_hamiltonian(params)
     return float(np.real(np.trace(H @ rho)))
@@ -99,12 +136,42 @@ def _dot_N(rho: np.ndarray) -> float:
 class CollisionEngine:
     """Stroboscopic map: lead waiting → collision → repeat."""
 
-    def __init__(self, params: SpinValveParams):
+    def __init__(
+        self,
+        params: SpinValveParams,
+        *,
+        mode: str = "coherent",
+    ):
+        """mode: coherent | matched | incoherent | none | dephasing"""
         self.params = params
+        self.mode = mode
+
+    def _collide(self, rho_wait: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        if self.mode == "coherent":
+            return apply_collision(rho_wait, self.params)
+        if self.mode == "matched":
+            return apply_collision_matched(rho_wait, self.params)
+        if self.mode == "incoherent":
+            return apply_collision_incoherent(rho_wait, self.params)
+        if self.mode == "none":
+            return rho_wait, np.diag([1.0 - self.params.alpha, self.params.alpha]).astype(
+                complex
+            )
+        raise ValueError(f"unknown collision mode {self.mode}")
 
     def step(self, rho_D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        if self.mode == "dephasing":
+            rho = evolve_leads(rho_D, self.params, self.params.T_period)
+            rho = rho.copy()
+            rho[1, 2] = 0.0
+            rho[2, 1] = 0.0
+            rho = 0.5 * (rho + rho.conj().T)
+            tr = np.trace(rho)
+            if abs(tr) > 0:
+                rho = rho / tr
+            return rho, np.diag([1.0, 0.0]).astype(complex)
         rho_wait = evolve_leads(rho_D, self.params, self.params.waiting_time)
-        return apply_collision(rho_wait, self.params)
+        return self._collide(rho_wait)
 
     def find_fixed_point(
         self,
@@ -129,12 +196,56 @@ class CollisionEngine:
                 converged = True
                 break
 
-        # Period structure at FP:
-        #   rho = post-collision
-        #   rho_wait = after leads for waiting_time (pre-collision)
-        #   apply_collision(rho_wait) ≈ rho
+        # Period structure at FP
+        if self.mode == "dephasing":
+            rho_wait = rho
+            rho_check = rho
+            p2 = SpinValveParams(
+                **{**self.params.__dict__, "tau": 0.0, "T_period": self.params.T_period}
+            )
+            cyc = cycle_average_currents(rho, p2, n_steps=current_steps)
+            W_A = 0.0
+            parts = {"W_coh": 0.0, "W_inc": 0.0}
+            W_acc2 = 0.0
+            E_A = 0.0
+            rho_A_out = np.diag([1.0, 0.0]).astype(complex)
+            dE_wait = dE_coll = dN_wait = dN_coll = 0.0
+            first_law_residual = 0.0
+            inst_wait = instantaneous_currents(rho, self.params)
+            return EngineResult(
+                rho_D=rho,
+                rho_wait=rho_wait,
+                rho_A_out=rho_A_out,
+                P_el=cyc.P_el,
+                I=cyc.I,
+                J_N_L=cyc.J_N_L,
+                J_N_R=cyc.J_N_R,
+                J_E_L=cyc.J_E_L,
+                J_E_R=cyc.J_E_R,
+                J_Q_L=cyc.J_Q_L,
+                J_Q_R=cyc.J_Q_R,
+                residual_particle_avg=cyc.residual_particle,
+                particle_balance_instant=inst_wait.particle_balance,
+                P_erg=0.0,
+                W_A=0.0,
+                W_coh=0.0,
+                W_inc=0.0,
+                W_acc2=0.0,
+                E_A=0.0,
+                coherence=spin_coherence(rho),
+                pops=populations(rho),
+                n_iter=n_iter,
+                converged=converged,
+                dE_wait=0.0,
+                dE_collision=0.0,
+                dN_wait=0.0,
+                dN_collision=0.0,
+                first_law_residual=0.0,
+                notes=f"mode={self.mode}",
+            )
+
         rho_wait = evolve_leads(rho, self.params, self.params.waiting_time)
-        rho_check, rho_A_out = apply_collision(rho_wait, self.params)
+        rho_check, rho_A_out = self._collide(rho_wait)
 
         cyc = cycle_average_currents(rho, self.params, n_steps=current_steps)
         inst_wait = instantaneous_currents(rho_wait, self.params)

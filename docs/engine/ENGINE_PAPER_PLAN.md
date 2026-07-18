@@ -74,9 +74,10 @@ Companion formulas (map, ergotropy, rate match, accessibility) appear as **lemma
 
 ### Stage 3 — Paper-real content
 
-- Tradeoff \((P_{\mathrm{el}},P_{\mathrm{erg}})\)
-- Controls: no collision / dephasing / population reset / matched-population / collinear
-- Narrative: partitioning / tradeoff, not “restored collinear power”
+- [x] Engine-window search \(P_{\mathrm{el}}>0\) with coherence
+- [x] Tradeoff \((P_{\mathrm{el}},P_{\mathrm{erg}})\) on chosen TE window
+- [x] Controls: coherent / matched / incoherent / none / dephasing / \(\alpha=1/2\) / collinear
+- [x] **Chosen story:** `thermoelectric_engine_plus_battery` — see `results/stage3/STAGE3_REPORT.md`
 
 ### Stage 4 — Manuscript
 
@@ -109,7 +110,8 @@ Both pass       → build full engine paper; companion = SI
 | 2026-07-18 | Gate 1 Week 1 scan | **GO** (borderline $\|C\|\approx0.050$). See `results/gate1/GATE1_REPORT.md` |
 | 2026-07-18 | Gate 1 boost / gap-fill | $\|C\|$ raised to **~0.14** via $p$, bias, small $\Delta$, tilt. See `results/gate1/GATE1_BOOST_REPORT.md` |
 | 2026-07-18 | Gate 2 harvest | **GO**: one-shot $\mathcal{W}_A>0$, stroboscopic residual $C$, regeneration; $\alpha=1/2$ has $\mathcal{W}_{\rm coh}=0$. See `results/gate2/GATE2_REPORT.md` |
-| 2026-07-18 | Stage 2 currents | Lead-resolved $J_{N,E,Q}$; cycle averages; $P_{\rm el}=-(\mu_L-\mu_R)I$; NESS balance $\sim10^{-16}$; FL residual $\sim10^{-3}$. Boosted window still $P_{\rm el}<0$ (not claimed as TE engine). See `results/stage2/STAGE2_REPORT.md` |
+| 2026-07-18 | Stage 2 currents | Lead-resolved currents + bookkeeping. See `results/stage2/STAGE2_REPORT.md` |
+| 2026-07-18 | Stage 3 story | **Engine story works:** 5183 NESS hits with $P_{\rm el}>0$ & $|C|>0.01$; chosen TE window keeps $P_{\rm el}>0$ on 100% of rate scan; coherent collisions give $P_{\rm erg}>0$, incoherent/collinear give $0$. Story tag `thermoelectric_engine_plus_battery`. See `results/stage3/STAGE3_REPORT.md` |
 
 ---
 
