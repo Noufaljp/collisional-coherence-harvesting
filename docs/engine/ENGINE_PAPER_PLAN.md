@@ -66,9 +66,11 @@ Companion formulas (map, ergotropy, rate match, accessibility) appear as **lemma
 
 ### Stage 2 — Engine core (only if gates pass)
 
-- Lead-resolved cycle-averaged currents (replace proxy)
-- Stroboscopic fixed point with collisions
-- Sign convention table for \(P_{\mathrm{el}}\)
+- [x] Lead-resolved cycle-averaged currents (replace proxy) — `channels.py`, `currents.py`
+- [x] Stroboscopic fixed point with collisions + bookkeeping — `engine.py`
+- [x] Sign convention table — `docs/engine/SIGN_CONVENTION.md`
+- [x] Rate / \(\theta\) scans + controls — `results/stage2/STAGE2_REPORT.md`
+- [ ] Engine-regime search \(P_{\mathrm{el}}>0\) (optional Stage 3)
 
 ### Stage 3 — Paper-real content
 
@@ -107,6 +109,7 @@ Both pass       → build full engine paper; companion = SI
 | 2026-07-18 | Gate 1 Week 1 scan | **GO** (borderline $\|C\|\approx0.050$). See `results/gate1/GATE1_REPORT.md` |
 | 2026-07-18 | Gate 1 boost / gap-fill | $\|C\|$ raised to **~0.14** via $p$, bias, small $\Delta$, tilt. See `results/gate1/GATE1_BOOST_REPORT.md` |
 | 2026-07-18 | Gate 2 harvest | **GO**: one-shot $\mathcal{W}_A>0$, stroboscopic residual $C$, regeneration; $\alpha=1/2$ has $\mathcal{W}_{\rm coh}=0$. See `results/gate2/GATE2_REPORT.md` |
+| 2026-07-18 | Stage 2 currents | Lead-resolved $J_{N,E,Q}$; cycle averages; $P_{\rm el}=-(\mu_L-\mu_R)I$; NESS balance $\sim10^{-16}$; FL residual $\sim10^{-3}$. Boosted window still $P_{\rm el}<0$ (not claimed as TE engine). See `results/stage2/STAGE2_REPORT.md` |
 
 ---
 
