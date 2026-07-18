@@ -188,8 +188,8 @@ Use (or lightly polish) existing outputs in `figures/`:
 3. We do **not** claim two ancillas always unlock the resource.  
 4. We do **not** present the spin-valve numerics in the repo as a finished device theory.  
 5. Ergotropy is **not** added as an extra energy current in the first law.  
-6. We do **not** disprove the minimal-qubit RI no-go of Barsky-Giles *et al.* (arXiv:2602.18300). We cite it as applying to a different setup (thermal qubit engine/fridge) and as motivation for enriched models (V-system + battery tape).  
-7. Gross \(P_{\rm erg}\) is **not** by itself a two-bath heat-engine efficiency; ground-ancilla preparation cost and phase-reference cost must be counted for net claims.
+6. arXiv:2602.18300 (minimal thermal-qubit RI no-go) is only a **background RI cite**, not a central comparison—do not over-discuss.  
+7. Gross \(P_{\rm erg}\) is not a complete net device efficiency without preparation / phase-reference costs.
 
 ---
 
